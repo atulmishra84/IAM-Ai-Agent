@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM AI Agent - Administration Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="config-styles.css">
+<script src="config.js"></script></head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>IAM AI Agent</span>
+                </div>
+                <div class="version">v1.0.0</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#dashboard" class="nav-link" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#integrations" class="nav-link" data-section="integrations">
+                        <i class="fas fa-plug"></i>
+                        <span>Integrations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#azure-ad" class="nav-link" data-section="azure-ad">
+                        <i class="fab fa-microsoft"></i>
+                        <span>Azure AD</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#onprem-ad" class="nav-link" data-section="onprem-ad">
+                        <i class="fas fa-server"></i>
+                        <span>On-Premise AD</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#servicenow" class="nav-link" data-section="servicenow">
+                        <i class="fas fa-cogs"></i>
+                        <span>ServiceNow</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#copilot" class="nav-link" data-section="copilot">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Copilot</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#third-party" class="nav-link" data-section="third-party">
+                        <i class="fas fa-puzzle-piece"></i>
+                        <span>Third Party Apps</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#users" class="nav-link" data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#security" class="nav-link" data-section="security">
+                        <i class="fas fa-lock"></i>
+                        <span>Security</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#logs" class="nav-link" data-section="logs">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Audit Logs</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#settings" class="nav-link" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <div class="system-status">
+                        <span class="status-indicator online"></span>
+                        <span>System Online</span>
+                    </div>
+                    <div class="user-menu">
+                        <button class="user-button">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Admin</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="user-dropdown">
+                            <a href="#profile">Profile</a>
+                            <a href="#notifications">Notifications</a>
+                            <a href="#logout">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content-wrapper">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="content-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon azure">
+                                <i class="fab fa-microsoft"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Azure AD</h3>
+                                <p class="stat-value" id="azure-users">1,247</p>
+                                <p class="stat-label">Active Users</p>
+                                <span class="stat-status connected">Connected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon onprem">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>On-Premise AD</h3>
+                                <p class="stat-value" id="onprem-users">892</p>
+                                <p class="stat-label">Synchronized Users</p>
+                                <span class="stat-status connected">Connected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon servicenow">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>ServiceNow</h3>
+                                <p class="stat-value" id="servicenow-tickets">156</p>
+                                <p class="stat-label">Active Tickets</p>
+                                <span class="stat-status connected">Connected</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon copilot">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>AI Copilot</h3>
+                                <p class="stat-value" id="ai-requests">2,341</p>
+                                <p class="stat-label">Requests Today</p>
+                                <span class="stat-status connected">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>Recent Activity</h3>
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <i class="fas fa-user-plus text-success"></i>
+                                    <div class="activity-content">
+                                        <p>New user provisioned in Azure AD</p>
+                                        <span class="timestamp">2 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-sync text-info"></i>
+                                    <div class="activity-content">
+                                        <p>AD synchronization completed</p>
+                                        <span class="timestamp">15 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-ticket-alt text-warning"></i>
+                                    <div class="activity-content">
+                                        <p>ServiceNow ticket created</p>
+                                        <span class="timestamp">1 hour ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>System Health</h3>
+                            <div class="health-metrics">
+                                <div class="metric">
+                                    <label>CPU Usage</label>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 45%"></div>
+                                    </div>
+                                    <span>45%</span>
+                                </div>
+                                <div class="metric">
+                                    <label>Memory</label>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 62%"></div>
+                                    </div>
+                                    <span>62%</span>
+                                </div>
+                                <div class="metric">
+                                    <label>API Response Time</label>
+                                    <div class="progress-bar">
+                                        <div class="progress success" style="width: 25%"></div>
+                                    </div>
+                                    <span>247ms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Integrations Overview Section -->
+                <section id="integrations-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Integration Management</h2>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add Integration
+                        </button>
+                    </div>
+
+                    <div class="integrations-grid">
+                        <div class="integration-card">
+                            <div class="integration-header">
+                                <div class="integration-icon azure">
+                                    <i class="fab fa-microsoft"></i>
+                                </div>
+                                <div class="integration-info">
+                                    <h3>Microsoft Azure AD</h3>
+                                    <span class="status connected">Connected</span>
+                                </div>
+                                <div class="integration-actions">
+                                    <button class="btn btn-sm btn-outline">Configure</button>
+                                    <button class="btn btn-sm btn-outline">Test</button>
+                                </div>
+                            </div>
+                            <div class="integration-details">
+                                <p><strong>Tenant:</strong> acmecorp.onmicrosoft.com</p>
+                                <p><strong>Last Sync:</strong> 2 minutes ago</p>
+                                <p><strong>Users:</strong> 1,247 active</p>
+                            </div>
+                        </div>
+
+                        <div class="integration-card">
+                            <div class="integration-header">
+                                <div class="integration-icon onprem">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                                <div class="integration-info">
+                                    <h3>On-Premise Active Directory</h3>
+                                    <span class="status connected">Connected</span>
+                                </div>
+                                <div class="integration-actions">
+                                    <button class="btn btn-sm btn-outline">Configure</button>
+                                    <button class="btn btn-sm btn-outline">Test</button>
+                                </div>
+                            </div>
+                            <div class="integration-details">
+                                <p><strong>Domain:</strong> corp.acme.local</p>
+                                <p><strong>Last Sync:</strong> 15 minutes ago</p>
+                                <p><strong>Users:</strong> 892 synchronized</p>
+                            </div>
+                        </div>
+
+                        <div class="integration-card">
+                            <div class="integration-header">
+                                <div class="integration-icon servicenow">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="integration-info">
+                                    <h3>ServiceNow</h3>
+                                    <span class="status connected">Connected</span>
+                                </div>
+                                <div class="integration-actions">
+                                    <button class="btn btn-sm btn-outline">Configure</button>
+                                    <button class="btn btn-sm btn-outline">Test</button>
+                                </div>
+                            </div>
+                            <div class="integration-details">
+                                <p><strong>Instance:</strong> acmecorp.service-now.com</p>
+                                <p><strong>Last Update:</strong> 5 minutes ago</p>
+                                <p><strong>Active Tickets:</strong> 156</p>
+                            </div>
+                        </div>
+
+                        <div class="integration-card">
+                            <div class="integration-header">
+                                <div class="integration-icon copilot">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="integration-info">
+                                    <h3>AI Copilot</h3>
+                                    <span class="status connected">Active</span>
+                                </div>
+                                <div class="integration-actions">
+                                    <button class="btn btn-sm btn-outline">Configure</button>
+                                    <button class="btn btn-sm btn-outline">Test</button>
+                                </div>
+                            </div>
+                            <div class="integration-details">
+                                <p><strong>Model:</strong> GPT-4</p>
+                                <p><strong>Requests Today:</strong> 2,341</p>
+                                <p><strong>Success Rate:</strong> 98.7%</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Placeholder for other sections (will be implemented in separate files) -->
+                <section id="azure-ad-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading Azure AD Configuration...</p>
+                    </div>
+                </section>
+
+                <section id="onprem-ad-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading On-Premise AD Configuration...</p>
+                    </div>
+                </section>
+
+                <section id="servicenow-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading ServiceNow Configuration...</p>
+                    </div>
+                </section>
+
+                <section id="copilot-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading AI Copilot Configuration...</p>
+                    </div>
+                </section>
+
+                <section id="third-party-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading Third Party Applications...</p>
+                    </div>
+                </section>
+
+                <section id="users-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading User Management...</p>
+                    </div>
+                </section>
+
+                <section id="security-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading Security Settings...</p>
+                    </div>
+                </section>
+
+                <section id="logs-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading Audit Logs...</p>
+                    </div>
+                </section>
+
+                <section id="settings-section" class="content-section">
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading System Settings...</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

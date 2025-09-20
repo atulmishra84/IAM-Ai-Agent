@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM AI Agent - Enterprise Identity Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            border-color: #ff6b6b;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff5252, #e53935);
+        }
+
+        .status-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .status-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .status-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #4ade80;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                IAM AI Agent
+            </div>
+            <h1 class="tagline">Enterprise Identity Management Powered by AI</h1>
+            <p class="description">
+                Transform your organization's identity and access management with intelligent automation, 
+                seamless integrations, and enterprise-grade security.
+            </p>
+        </header>
+
+        <section class="status-section">
+            <h2>
+                <span class="status-indicator"></span>
+                System Status
+            </h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-value" id="azure-users">1,247</div>
+                    <div class="status-label">Azure AD Users</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="onprem-users">892</div>
+                    <div class="status-label">On-Premise Users</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="ai-requests">2,341</div>
+                    <div class="status-label">AI Requests Today</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value">99.9%</div>
+                    <div class="status-label">Uptime</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="feature-title">AI-Powered Automation</h3>
+                <p class="feature-description">
+                    Natural language processing for user requests, intelligent workflow automation, 
+                    and smart decision-making with OpenAI GPT-4 integration.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fab fa-microsoft"></i>
+                </div>
+                <h3 class="feature-title">Azure AD Integration</h3>
+                <p class="feature-description">
+                    Seamless synchronization with Azure Active Directory, automatic user provisioning, 
+                    and real-time directory updates.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3 class="feature-title">On-Premise AD</h3>
+                <p class="feature-description">
+                    Connect and synchronize with your existing on-premise Active Directory infrastructure 
+                    with secure LDAP integration.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3 class="feature-title">ServiceNow Workflows</h3>
+                <p class="feature-description">
+                    Automated ticket creation, approval workflows, and seamless integration 
+                    with your existing ITSM processes.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="feature-title">Enterprise Security</h3>
+                <p class="feature-description">
+                    Multi-factor authentication, role-based access control, comprehensive audit logging, 
+                    and compliance reporting.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="feature-title">Real-time Analytics</h3>
+                <p class="feature-description">
+                    Live dashboards, performance metrics, user activity monitoring, 
+                    and comprehensive reporting capabilities.
+                </p>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Get Started with IAM AI Agent</h2>
+            <div class="cta-buttons">
+                <a href="/admin/index.html" class="btn btn-primary">
+                    <i class="fas fa-cog"></i>
+                    Administration Dashboard
+                </a>
+                <a href="/demo/interactive-demo.html" class="btn">
+                    <i class="fas fa-play"></i>
+                    Interactive Demo
+                </a>
+                <a href="/api/health" class="btn">
+                    <i class="fas fa-heartbeat"></i>
+                    API Health Check
+                </a>
+                <a href="/demo/testing-guide.md" class="btn">
+                    <i class="fas fa-book"></i>
+                    Documentation
+                </a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2025 IAM AI Agent. Enterprise Identity Management Solution.</p>
+            <p>Version 1.0.0 | Deployed on Azure Static Web Apps</p>
+        </footer>
+    </div>
+
+    <script>
+        // Update real-time statistics
+        async function updateStats() {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    // Update status indicator to show system is online
+                    document.querySelector('.status-indicator').style.background = '#4ade80';
+                }
+            } catch (error) {
+                // System offline
+                document.querySelector('.status-indicator').style.background = '#ef4444';
+            }
+        }
+
+        // Update stats on page load and every 30 seconds
+        updateStats();
+        setInterval(updateStats, 30000);
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

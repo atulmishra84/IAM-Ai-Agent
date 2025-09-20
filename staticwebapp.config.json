@@ -1,0 +1,41 @@
+{
+    "routes": [
+        {
+            "route": "/admin*",
+            "rewrite": "/admin/index.html"
+        },
+        {
+            "route": "/demo*",
+            "rewrite": "/demo/interactive-demo.html"
+        },
+        {
+            "route": "/api/*"
+        }
+    ],
+    "navigationFallback": {
+        "rewrite": "/index.html"
+    },
+    "responseOverrides": {
+        "404": {
+            "rewrite": "/index.html"
+        },
+        "401": {
+            "redirect": "/login.html",
+            "statusCode": 302
+        },
+        "403": {
+            "redirect": "/unauthorized.html",
+            "statusCode": 302
+        }
+    },
+    "globalHeaders": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'"
+    },
+    "mimeTypes": {
+        ".json": "application/json",
+        ".js": "application/javascript",
+        ".css": "text/css"
+    }
+}

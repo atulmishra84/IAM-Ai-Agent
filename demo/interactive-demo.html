@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM AI Agent - Interactive Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .demo-content {
+            padding: 30px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .demo-scenarios {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .demo-output {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 25px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            min-height: 400px;
+            overflow-y: auto;
+        }
+
+        .scenario-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .scenario-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .scenario-button.running {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .scenario-button.completed {
+            background: #28a745;
+        }
+
+        .scenario-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .scenario-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #28a745;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: #0056b3;
+        }
+
+        .control-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .custom-request {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .metric-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 IAM AI Agent</h1>
+            <p>Interactive Customer Demonstration</p>
+        </div>
+
+        <div class="demo-content">
+            <div class="status-bar">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>System Status: <strong>Online</strong></span>
+                </div>
+                <div>
+                    <span>Demo URL: <strong id="demo-url">window.location.origin</strong></span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="control-button" onclick="runHealthCheck()">🏥 Health Check</button>
+                <button class="control-button" onclick="runQuickDemo()">⚡ Quick Demo</button>
+                <button class="control-button" onclick="runFullDemo()">🎯 Full Demo</button>
+                <button class="control-button" onclick="runCopilotSuite()">🤖 Copilot Suite</button>
+                <button class="control-button" onclick="clearOutput()">🗑️ Clear Output</button>
+            </div>
+
+            <div class="demo-grid">
+                <div class="demo-scenarios">
+                    <h3>📋 Demo Scenarios</h3>
+                    
+                    <div class="scenario-group">
+                        <h4>🏢 Core Business Scenarios</h4>
+                        <button class="scenario-button" onclick="runScenario('onboarding')">
+                            <div class="scenario-title">👤 Employee Onboarding</div>
+                            <div class="scenario-desc">New hire provisioning with multi-system access</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runScenario('promotion')">
+                            <div class="scenario-title">🚀 Employee Promotion</div>
+                            <div class="scenario-desc">Role-based access updates and privilege escalation</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runScenario('transfer')">
+                            <div class="scenario-title">🔄 Department Transfer</div>
+                            <div class="scenario-desc">Complex multi-system updates for organizational changes</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runScenario('bulk')">
+                            <div class="scenario-title">👥 Bulk Operations</div>
+                            <div class="scenario-desc">Project team setup with group management</div>
+                        </button>
+                    </div>
+
+                    <div class="scenario-group">
+                        <h4>🔒 Security & Compliance</h4>
+                        <button class="scenario-button" onclick="runScenario('security')">
+                            <div class="scenario-title">🚨 Security Emergency</div>
+                            <div class="scenario-desc">Rapid incident response for security threats</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runScenario('compliance')">
+                            <div class="scenario-title">📊 Compliance Audit</div>
+                            <div class="scenario-desc">Regulatory reporting and audit trail generation</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runScenario('policy')">
+                            <div class="scenario-title">🔐 Policy Enforcement</div>
+                            <div class="scenario-desc">Automated security policy implementation</div>
+                        </button>
+                    </div>
+
+                    <div class="scenario-group">
+                        <h4>🔍 Advanced Scenarios</h4>
+                        <button class="scenario-button" onclick="runScenario('executive')">
+                            <div class="scenario-title">💼 Executive Onboarding</div>
+                            <div class="scenario-desc">High-privilege executive account provisioning</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runScenario('offboarding')">
+                            <div class="scenario-title">👋 Employee Offboarding</div>
+                            <div class="scenario-desc">Complete termination with data transfer</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runScenario('help')">
+                            <div class="scenario-title">🆘 Help System</div>
+                            <div class="scenario-desc">AI assistant capabilities and guidance</div>
+                        </button>
+                    </div>
+
+                    <div class="scenario-group">
+                        <h4>🤖 Copilot-Enhanced Testing</h4>
+                        <button class="scenario-button" onclick="runCopilotTest('generate')">
+                            <div class="scenario-title">🎯 Generate Test Scenario</div>
+                            <div class="scenario-desc">AI-powered dynamic test generation</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runCopilotTest('validate')">
+                            <div class="scenario-title">🔍 Validate Response Quality</div>
+                            <div class="scenario-desc">Intelligent response validation</div>
+                        </button>
+                        
+                        <button class="scenario-button" onclick="runCopilotTest('debug')">
+                            <div class="scenario-title">🔧 Debug & Optimize</div>
+                            <div class="scenario-desc">AI-assisted troubleshooting</div>
+                        </button>
+                    </div>
+
+                    <div class="custom-request">
+                        <h4>💬 Custom Request</h4>
+                        <div class="form-group">
+                            <label for="custom-input">Natural Language Request:</label>
+                            <textarea id="custom-input" placeholder="Type your IAM request in natural language..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-id">User ID:</label>
+                            <input type="text" id="user-id" value="demo.user@acmecorp.com" />
+                        </div>
+                        <button class="control-button" onclick="runCustomRequest()">Send Request</button>
+                        <button class="control-button" onclick="runCopilotAnalysis()">🤖 Copilot Analysis</button>
+                    </div>
+                </div>
+
+                <div class="demo-output">
+                    <div id="output">
+                        <div style="color: #00ff00;">IAM AI Agent - Interactive Demo Console</div>
+                        <div style="color: #888;">Ready for demonstration. Click a scenario or run a health check to begin.</div>
+                        <div style="color: #888;">System: Online | API: Ready | Time: <span id="current-time"></span></div>
+                        <div style="color: #666;">=====================================</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-value" id="requests-count">0</div>
+                    <div class="metric-label">Requests Made</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="success-rate">100%</div>
+                    <div class="metric-label">Success Rate</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="avg-response">0ms</div>
+                    <div class="metric-label">Avg Response</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="uptime">100%</div>
+                    <div class="metric-label">System Uptime</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'window.location.origin';
+        let requestCount = 0;
+        let successCount = 0;
+        let totalResponseTime = 0;
+
+        // Scenarios data
+        const scenarios = {
+            onboarding: {
+                userInput: "New employee Sarah Johnson is starting Monday in Marketing. She needs access to Office365, Marketing shared drive, CRM system, and should be added to Marketing team distribution list. Her manager is Mike Stevens.",
+                userId: "hr.manager@acmecorp.com",
+                title: "Employee Onboarding"
+            },
+            promotion: {
+                userInput: "John Davis was promoted from Developer to Senior Developer. Update his title and add him to Senior-Developers security group with access to production systems and code repositories.",
+                userId: "engineering.manager@acmecorp.com",
+                title: "Employee Promotion"
+            },
+            transfer: {
+                userInput: "Lisa Brown is transferring from Finance to Marketing department. Remove her from Finance groups, add to Marketing groups, update her department and cost center to Marketing, and change her manager to Tom Wilson.",
+                userId: "hr.admin@acmecorp.com",
+                title: "Department Transfer"
+            },
+            bulk: {
+                userInput: "Create Project-Phoenix security group and add these team members: alice.smith, bob.jones, carol.white, david.brown. Grant them access to Phoenix shared folder and project management tools.",
+                userId: "project.manager@acmecorp.com",
+                title: "Project Team Setup"
+            },
+            security: {
+                userInput: "URGENT: Suspicious login activity detected for user mike.suspicious@acmecorp.com from unusual location. Immediately disable account, revoke all sessions, and notify security team.",
+                userId: "security.admin@acmecorp.com",
+                title: "Security Emergency"
+            },
+            compliance: {
+                userInput: "Generate compliance report showing all users with administrative privileges, their last login dates, and any privileged access granted in the last 30 days for SOX audit.",
+                userId: "compliance.officer@acmecorp.com",
+                title: "Compliance Audit"
+            },
+            policy: {
+                userInput: "Enable MFA for all users in Finance department and force password reset for users who have not changed passwords in 90 days.",
+                userId: "it.security@acmecorp.com",
+                title: "Policy Enforcement"
+            },
+            executive: {
+                userInput: "New VP of Sales Jennifer Adams starts Monday. Create executive account with VIP mailbox, access to Salesforce admin, financial systems, board portal, and executive parking. Set up mobile device enrollment and assign executive assistant access to her calendar.",
+                userId: "c.level.admin@acmecorp.com",
+                title: "Executive Onboarding"
+            },
+            offboarding: {
+                userInput: "Employee termination: Disable account for james.leaving@acmecorp.com effective immediately. Transfer his files to his manager susan.manager@acmecorp.com, revoke all access, and add him to disabled users group.",
+                userId: "hr.admin@acmecorp.com",
+                title: "Employee Offboarding"
+            },
+            help: {
+                userInput: "What can you help me with?",
+                userId: "new.user@acmecorp.com",
+                title: "Help System"
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+
+        function addToOutput(text, color = '#00ff00') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.style.color = color;
+            div.textContent = text;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function addJsonToOutput(json, title = '') {
+            if (title) {
+                addToOutput(title, '#ffff00');
+            }
+            addToOutput(JSON.stringify(json, null, 2), '#00ff00');
+            addToOutput('─'.repeat(50), '#666');
+        }
+
+        function clearOutput() {
+            document.getElementById('output').innerHTML = `
+                <div style="color: #00ff00;">IAM AI Agent - Interactive Demo Console</div>
+                <div style="color: #888;">Console cleared. Ready for new demonstration.</div>
+                <div style="color: #888;">System: Online | API: Ready | Time: ${new Date().toLocaleTimeString()}</div>
+                <div style="color: #666;">=====================================</div>
+            `;
+        }
+
+        function updateMetrics() {
+            document.getElementById('requests-count').textContent = requestCount;
+            document.getElementById('success-rate').textContent = requestCount > 0 ? Math.round((successCount / requestCount) * 100) + '%' : '100%';
+            document.getElementById('avg-response').textContent = requestCount > 0 ? Math.round(totalResponseTime / requestCount) + 'ms' : '0ms';
+        }
+
+        async function makeRequest(url, data = null, method = 'GET') {
+            const startTime = Date.now();
+            requestCount++;
+
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+
+                const response = await fetch(url, options);
+                const responseTime = Date.now() - startTime;
+                totalResponseTime += responseTime;
+
+                if (response.ok) {
+                    successCount++;
+                    const result = await response.json();
+                    updateMetrics();
+                    return { success: true, data: result, responseTime };
+                } else {
+                    updateMetrics();
+                    return { success: false, error: `HTTP ${response.status}`, responseTime };
+                }
+            } catch (error) {
+                const responseTime = Date.now() - startTime;
+                totalResponseTime += responseTime;
+                updateMetrics();
+                return { success: false, error: error.message, responseTime };
+            }
+        }
+
+        async function runHealthCheck() {
+            addToOutput('🏥 Running Health Check...', '#ffff00');
+            
+            const healthResult = await makeRequest(`${BASE_URL}/api/health`);
+            if (healthResult.success) {
+                addJsonToOutput(healthResult.data, '✅ Health Check Result:');
+            } else {
+                addToOutput(`❌ Health Check Failed: ${healthResult.error}`, '#ff0000');
+            }
+
+            const statusResult = await makeRequest(`${BASE_URL}/api/iam-agent/status`);
+            if (statusResult.success) {
+                addJsonToOutput(statusResult.data, '✅ System Status:');
+            } else {
+                addToOutput(`❌ Status Check Failed: ${statusResult.error}`, '#ff0000');
+            }
+        }
+
+        async function runScenario(scenarioKey) {
+            const scenario = scenarios[scenarioKey];
+            if (!scenario) return;
+
+            // Update button state
+            const button = event.target.closest('button');
+            button.classList.add('running');
+            button.disabled = true;
+
+            addToOutput(`🎯 Running Scenario: ${scenario.title}`, '#ffff00');
+            addToOutput(`👤 User: ${scenario.userId}`, '#888');
+            addToOutput(`💬 Request: "${scenario.userInput}"`, '#888');
+            addToOutput('⏳ Processing...', '#888');
+
+            const result = await makeRequest(`${BASE_URL}/api/iam-agent/copilot/chat`, {
+                userInput: scenario.userInput,
+                userId: scenario.userId
+            }, 'POST');
+
+            if (result.success) {
+                addJsonToOutput(result.data, `✅ Response (${result.responseTime}ms):`);
+                button.classList.remove('running');
+                button.classList.add('completed');
+            } else {
+                addToOutput(`❌ Request Failed: ${result.error}`, '#ff0000');
+                button.classList.remove('running');
+            }
+
+            setTimeout(() => {
+                button.disabled = false;
+                button.classList.remove('completed');
+            }, 3000);
+        }
+
+        async function runCustomRequest() {
+            const userInput = document.getElementById('custom-input').value.trim();
+            const userId = document.getElementById('user-id').value.trim();
+
+            if (!userInput || !userId) {
+                addToOutput('❌ Please provide both user input and user ID', '#ff0000');
+                return;
+            }
+
+            addToOutput('🎯 Running Custom Request...', '#ffff00');
+            addToOutput(`👤 User: ${userId}`, '#888');
+            addToOutput(`💬 Request: "${userInput}"`, '#888');
+            addToOutput('⏳ Processing...', '#888');
+
+            const result = await makeRequest(`${BASE_URL}/api/iam-agent/copilot/chat`, {
+                userInput: userInput,
+                userId: userId
+            }, 'POST');
+
+            if (result.success) {
+                addJsonToOutput(result.data, `✅ Response (${result.responseTime}ms):`);
+            } else {
+                addToOutput(`❌ Request Failed: ${result.error}`, '#ff0000');
+            }
+        }
+
+        async function runQuickDemo() {
+            addToOutput('⚡ Starting Quick Demo...', '#ffff00');
+            await runHealthCheck();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await runScenario('help');
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await runScenario('onboarding');
+            addToOutput('✅ Quick Demo Completed!', '#00ff00');
+        }
+
+        async function runCopilotTest(testType) {
+            addToOutput(`🤖 Running Copilot Test: ${testType}`, '#ffff00');
+            
+            let request = {};
+            
+            switch(testType) {
+                case 'generate':
+                    request = {
+                        userInput: "Generate a realistic IAM test scenario for employee onboarding in a technology company with 500+ employees. Include specific user details, department, access requirements, and expected outcomes.",
+                        userId: "copilot.testing@acmecorp.com"
+                    };
+                    break;
+                case 'validate':
+                    const lastOutput = document.getElementById('output').lastElementChild?.textContent || '';
+                    request = {
+                        userInput: `Analyze this IAM response for completeness and accuracy: "${lastOutput}". Rate the response quality and suggest improvements.`,
+                        userId: "copilot.validator@acmecorp.com"
+                    };
+                    break;
+                case 'debug':
+                    request = {
+                        userInput: "Debug common IAM system issues and provide troubleshooting steps for slow response times, failed authentications, and integration problems.",
+                        userId: "copilot.debugger@acmecorp.com"
+                    };
+                    break;
+            }
+            
+            const result = await makeRequest(`${BASE_URL}/api/iam-agent/copilot/chat`, request, 'POST');
+            
+            if (result.success) {
+                addJsonToOutput(result.data, `✅ Copilot ${testType} Result (${result.responseTime}ms):`);
+            } else {
+                addToOutput(`❌ Copilot ${testType} Failed: ${result.error}`, '#ff0000');
+            }
+        }
+
+        async function runCopilotAnalysis() {
+            const userInput = document.getElementById('custom-input').value.trim();
+            const userId = document.getElementById('user-id').value.trim();
+
+            if (!userInput) {
+                addToOutput('❌ Please provide input for Copilot analysis', '#ff0000');
+                return;
+            }
+
+            addToOutput('🤖 Running Copilot Analysis...', '#ffff00');
+            addToOutput(`📝 Analyzing: "${userInput}"`, '#888');
+
+            // First, get the primary response
+            const primaryResult = await makeRequest(`${BASE_URL}/api/iam-agent/copilot/chat`, {
+                userInput: userInput,
+                userId: userId
+            }, 'POST');
+
+            if (primaryResult.success) {
+                addJsonToOutput(primaryResult.data, `✅ Primary Response (${primaryResult.responseTime}ms):`);
+                
+                // Then, get copilot analysis of the response
+                const analysisResult = await makeRequest(`${BASE_URL}/api/iam-agent/copilot/chat`, {
+                    userInput: `Analyze this IAM request and response for quality, completeness, and potential improvements. Original request: "${userInput}". AI Response: "${JSON.stringify(primaryResult.data)}". Provide detailed feedback and suggestions.`,
+                    userId: "copilot.analyst@acmecorp.com"
+                }, 'POST');
+
+                if (analysisResult.success) {
+                    addJsonToOutput(analysisResult.data, `🤖 Copilot Analysis (${analysisResult.responseTime}ms):`);
+                } else {
+                    addToOutput(`⚠️ Copilot analysis unavailable: ${analysisResult.error}`, '#ffa500');
+                }
+            } else {
+                addToOutput(`❌ Primary request failed: ${primaryResult.error}`, '#ff0000');
+            }
+        }
+
+        async function runFullDemo() {
+            addToOutput('🎯 Starting Full Demonstration...', '#ffff00');
+            
+            const demoSequence = ['help', 'onboarding', 'promotion', 'transfer', 'security', 'compliance', 'executive'];
+            
+            await runHealthCheck();
+            
+            for (const scenario of demoSequence) {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                await runScenario(scenario);
+            }
+            
+            addToOutput('🎉 Full Demo Completed!', '#00ff00');
+            addToOutput('📊 Demo Summary:', '#ffff00');
+            addToOutput(`Total Requests: ${requestCount}`, '#888');
+            addToOutput(`Success Rate: ${Math.round((successCount / requestCount) * 100)}%`, '#888');
+            addToOutput(`Average Response Time: ${Math.round(totalResponseTime / requestCount)}ms`, '#888');
+        }
+
+        async function runCopilotSuite() {
+            addToOutput('🤖 Starting Copilot-Enhanced Test Suite...', '#ffff00');
+            
+            await runHealthCheck();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            addToOutput('🎯 Running Copilot test generation...', '#00ff00');
+            await runCopilotTest('generate');
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            addToOutput('🔍 Running response validation...', '#00ff00');
+            await runCopilotTest('validate');
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            addToOutput('🔧 Running system debugging...', '#00ff00');
+            await runCopilotTest('debug');
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            addToOutput('🎉 Copilot Suite Completed!', '#00ff00');
+            addToOutput('🤖 AI-enhanced testing provides deeper insights into system performance', '#888');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+    "name": "iam-ai-agent-frontend",
+    "version": "1.0.0",
+    "description": "IAM AI Agent Frontend with Backend Proxy",
+    "main": "proxy.js",
+    "scripts": {
+        "start": "node proxy.js",
+        "dev": "BACKEND_URL=http://localhost:5000 node proxy.js"
+    },
+    "dependencies": {
+        "express": "^4.18.0",
+        "http-proxy-middleware": "^2.0.0"
+    }
+}

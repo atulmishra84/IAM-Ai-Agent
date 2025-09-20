@@ -1,0 +1,16 @@
+{
+    "name": "iam-ai-agent-webapp",
+    "version": "1.0.0",
+    "description": "IAM AI Agent Static Web Application",
+    "main": "index.html",
+    "scripts": {
+        "build": "echo 'Build completed'",
+        "start": "echo 'Static web app ready'",
+        "deploy": "echo 'Deploy to Azure Static Web Apps'"
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "keywords": ["iam", "identity", "ai", "azure", "static-web-app"],
+    "author": "IAM AI Agent Team",
+    "license": "MIT"
+}

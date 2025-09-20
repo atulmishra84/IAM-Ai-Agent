@@ -1,0 +1,25 @@
+{
+    "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": ["/admin/**", "/demo/**", "/api/**", "*.{css,js,png,jpg,gif,ico,svg}"]
+    },
+    "routes": [
+        {
+            "route": "/admin",
+            "rewrite": "/admin/index.html"
+        },
+        {
+            "route": "/admin/",
+            "rewrite": "/admin/index.html"
+        }
+    ],
+    "mimeTypes": {
+        ".json": "application/json",
+        ".js": "text/javascript",
+        ".css": "text/css",
+        ".html": "text/html"
+    },
+    "globalHeaders": {
+        "Cache-Control": "public, max-age=3600"
+    }
+}
