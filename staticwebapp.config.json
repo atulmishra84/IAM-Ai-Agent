@@ -1,11 +1,27 @@
 {
     "routes": [
         {
-            "route": "/admin*",
+            "route": "/admin/",
             "rewrite": "/admin/index.html"
         },
         {
-            "route": "/demo*",
+            "route": "/admin/*",
+            "rewrite": "/admin/index.html"
+        },
+        {
+            "route": "/admin",
+            "rewrite": "/admin/index.html"
+        },
+        {
+            "route": "/demo/",
+            "rewrite": "/demo/interactive-demo.html"
+        },
+        {
+            "route": "/demo/*",
+            "rewrite": "/demo/interactive-demo.html"
+        },
+        {
+            "route": "/demo",
             "rewrite": "/demo/interactive-demo.html"
         },
         {
@@ -14,19 +30,6 @@
     ],
     "navigationFallback": {
         "rewrite": "/index.html"
-    },
-    "responseOverrides": {
-        "404": {
-            "rewrite": "/index.html"
-        },
-        "401": {
-            "redirect": "/login.html",
-            "statusCode": 302
-        },
-        "403": {
-            "redirect": "/unauthorized.html",
-            "statusCode": 302
-        }
     },
     "globalHeaders": {
         "X-Content-Type-Options": "nosniff",
