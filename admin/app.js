@@ -314,7 +314,7 @@ class AdminDashboard {
         // Simulate API test - replace with actual test endpoints
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Simulate random success/failure for demo
+        // Simulate connection test result
         const success = Math.random() > 0.2; // 80% success rate
         
         return {

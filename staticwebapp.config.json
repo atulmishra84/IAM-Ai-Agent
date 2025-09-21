@@ -1,19 +1,32 @@
 {
-  "routes": [
-    {
-      "route": "/admin",
-      "rewrite": "/admin/index.html"
+    "routes": [
+        {
+            "route": "/admin/",
+            "rewrite": "/admin/index.html"
+        },
+        {
+            "route": "/admin/*",
+            "rewrite": "/admin/index.html"
+        },
+        {
+            "route": "/admin",
+            "rewrite": "/admin/index.html"
+        },
+        {
+            "route": "/api/*"
+        }
+    ],
+    "navigationFallback": {
+        "rewrite": "/index.html"
     },
-    {
-      "route": "/admin/",
-      "rewrite": "/admin/index.html"
+    "globalHeaders": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Content-Security-Policy": "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'"
     },
-    {
-      "route": "/api/*"
+    "mimeTypes": {
+        ".json": "application/json",
+        ".js": "application/javascript",
+        ".css": "text/css"
     }
-  ],
-  "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["/admin/*", "/api/*"]
-  }
 }
