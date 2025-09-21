@@ -9,16 +9,11 @@
       "rewrite": "/admin/index.html"
     },
     {
-      "route": "/demo",
-      "rewrite": "/demo/interactive-demo.html"
-    },
-    {
-      "route": "/demo/",
-      "rewrite": "/demo/interactive-demo.html"
+      "route": "/api/*"
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/admin/*", "/api/*", "/demo/*"]
+    "exclude": ["/admin/*", "/api/*"]
   }
 }
