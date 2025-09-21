@@ -4,7 +4,7 @@
     "description": "IAM AI Agent Static Web Application",
     "main": "index.html",
     "scripts": {
-        "build": "echo 'Build completed'",
+        "build": "echo 'Static files ready for deployment'",
         "start": "echo 'Static web app ready'",
         "deploy": "echo 'Deploy to Azure Static Web Apps'"
     },
