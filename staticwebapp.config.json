@@ -1,44 +1,24 @@
 {
-    "routes": [
-        {
-            "route": "/admin/",
-            "rewrite": "/admin/index.html"
-        },
-        {
-            "route": "/admin/*",
-            "rewrite": "/admin/index.html"
-        },
-        {
-            "route": "/admin",
-            "rewrite": "/admin/index.html"
-        },
-        {
-            "route": "/demo/",
-            "rewrite": "/demo/interactive-demo.html"
-        },
-        {
-            "route": "/demo/*",
-            "rewrite": "/demo/interactive-demo.html"
-        },
-        {
-            "route": "/demo",
-            "rewrite": "/demo/interactive-demo.html"
-        },
-        {
-            "route": "/api/*"
-        }
-    ],
-    "navigationFallback": {
-        "rewrite": "/index.html"
+  "routes": [
+    {
+      "route": "/admin",
+      "rewrite": "/admin/index.html"
     },
-    "globalHeaders": {
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "Content-Security-Policy": "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'"
+    {
+      "route": "/admin/",
+      "rewrite": "/admin/index.html"
     },
-    "mimeTypes": {
-        ".json": "application/json",
-        ".js": "application/javascript",
-        ".css": "text/css"
+    {
+      "route": "/demo",
+      "rewrite": "/demo/interactive-demo.html"
+    },
+    {
+      "route": "/demo/",
+      "rewrite": "/demo/interactive-demo.html"
     }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/admin/*", "/api/*", "/demo/*"]
+  }
 }
